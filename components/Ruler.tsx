@@ -10,12 +10,19 @@ export default function Ruler() {
       const max = document.documentElement.scrollHeight - innerHeight;
       setP(max > 0 ? scrollY / max : 0);
     };
+
     onScroll();
     addEventListener("scroll", onScroll, { passive: true });
     addEventListener("resize", onScroll);
+
+    const unsubLenis = window.__lenis?.on("scroll", (e: { progress: number }) => {
+      setP(e.progress);
+    });
+
     return () => {
       removeEventListener("scroll", onScroll);
       removeEventListener("resize", onScroll);
+      if (typeof unsubLenis === "function") unsubLenis();
     };
   }, []);
 

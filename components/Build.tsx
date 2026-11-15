@@ -41,7 +41,13 @@ export default function Build() {
 
   const skip = () => {
     const el = ref.current;
-    if (el) scrollTo({ top: el.offsetTop + el.offsetHeight - innerHeight * 0.5, behavior: "smooth" });
+    if (!el) return;
+    const targetY = el.offsetTop + el.offsetHeight - innerHeight * 0.5;
+    if (typeof window !== "undefined" && window.__lenis) {
+      window.__lenis.scrollTo(targetY, { duration: 1.2 });
+    } else {
+      scrollTo({ top: targetY, behavior: "smooth" });
+    }
   };
 
   return (
